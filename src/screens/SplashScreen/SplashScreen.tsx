@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
+import { styles } from "../../styles/SplashScreen";
 
 export default function SplashScreen() {
   const navigation = useNavigation();
@@ -26,15 +27,3 @@ export default function SplashScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  animation: {
-    width: 150,
-    height: 150,
-  },
-});
