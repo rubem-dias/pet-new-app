@@ -21,7 +21,7 @@ const LoginScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <TextInput
-          label={t('login.email')}
+          label={t('email')}
           mode="outlined"
           keyboardType="email-address"
           value={email}
@@ -30,7 +30,7 @@ const LoginScreen: React.FC = () => {
         />
 
         <TextInput
-          label={t('login.password')}
+          label={t('password')}
           mode="outlined"
           secureTextEntry
           value={password}
@@ -39,11 +39,11 @@ const LoginScreen: React.FC = () => {
         />
 
         <Button mode="contained" onPress={handleLogin} style={styles.loginButton}>
-          {t('login.button')}
+          {t('login')}
         </Button>
 
         <TouchableOpacity onPress={() => console.log('Esqueci minha senha')}>
-          <Text style={styles.forgotPassword}>{t('login.forgotPassword')}</Text>
+          <Text style={styles.forgotPassword}>{t('forgotPassword')}</Text>
         </TouchableOpacity>
       </View>
     </View>

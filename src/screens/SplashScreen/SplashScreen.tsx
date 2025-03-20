@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
 
 export default function SplashScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       navigation.dispatch(StackActions.replace('Login'));
-    }, 1000);
-  }, []);
+    }, 2500);
+    
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Carregando...</Text>
-      <ActivityIndicator size="large" color="#0000ff" />
+      <LottieView 
+        source={require('../../../assets/splash-loading.json')}
+        autoPlay
+        loop
+        style={styles.animation}
+      />
     </View>
   );
 }
@@ -26,8 +33,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
-  text: {
-    fontSize: 20,
-    marginBottom: 20,
+  animation: {
+    width: 150,
+    height: 150,
   },
 });
