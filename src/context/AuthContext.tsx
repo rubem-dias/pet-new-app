@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import mockUsers from '../test/mocks/mockUsers.json';
+import { saveToken } from "../utils/secureStorage";
 
 type User = {
     email: string;
@@ -26,16 +27,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode; }> = ({ childre
         console.log(`Login attempt with email: ${email} and password: ${password}`);
 
         const user = mockUsers.find(
-          (u) => u.email === email && u.password === password
+            (u) => u.email === email && u.password === password
         );
-      
+
         if (user) {
-          setUser(user);
-          return true;
+            await saveToken("t");
+            setUser(user);
+            return true;
         }
-      
+
         return false;
-      };
+    };
 
     const logout = () => setUser(null);
 

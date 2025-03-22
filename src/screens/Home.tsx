@@ -3,6 +3,7 @@ import { View, Text, Button } from 'react-native';
 import { useAuth } from "../context/AuthContext";
 
 const HomeScreen = () => {
+    
   const { logout } = useAuth();
 
   return (

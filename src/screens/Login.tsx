@@ -18,7 +18,7 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         const success = await login(email, password);
         if (!success) {
-            alert('Email ou senha incorretos!');
+            alert(t('loginError'));
         }
     };
 
@@ -129,7 +129,7 @@ const Login: React.FC = () => {
                         onPress={handleGoogleLogin}
                         style={styles.googleButton}
                     >
-                        {t('loginWithGoogle') || 'Login com Google'}
+                        {t('loginWithGoogle')}
                     </Button>
                 </Animated.View>
             </View>

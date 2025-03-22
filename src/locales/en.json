@@ -3,5 +3,6 @@
     "password": "Password",
     "login": "Login",
     "forgotPassword": "Forgot Password",
-    "loginWithGoogle": "Login with Google"
+    "loginWithGoogle": "Login with Google",
+    "loginError": "Incorrect email or password!"
 }

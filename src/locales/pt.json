@@ -3,5 +3,6 @@
     "password": "Senha",
     "login": "Entrar",
     "forgotPassword": "Esqueci minha senha",
-    "loginWithGoogle": "Entrar com o Google"
+    "loginWithGoogle": "Entrar com o Google",
+    "loginError": "Email ou senha incorretos!"
 }
