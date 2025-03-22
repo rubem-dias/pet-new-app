@@ -12,7 +12,13 @@ export default function Splash() {
     };
 
     useEffect(() => {
-        checkAndNavigate();
+        const timeoutDuration = 1500;
+
+        const timer = setTimeout(() => {
+            checkAndNavigate();
+        }, timeoutDuration);
+
+        return () => clearTimeout(timer);
     }, []);
 
     return <LoadingScreen />;
