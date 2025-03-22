@@ -1,18 +1,31 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import SplashScreen from "../screens/SplashScreen/SplashScreen";
-import LoginScreen from "../screens/LoginScreen/LoginScreen";
+import Splash from "../screens/Splash";
+import Login from "../screens/Login";
+import { useAuth } from "../context/AuthContext";
+import Home from "../screens/Home";
 
 const Stack = createStackNavigator();
 
 export default function Navigation() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+
+    const { user } = useAuth();
+
+    return (
+        <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {!user ? (
+            <>
+              <Stack.Screen name="Splash" component={Splash} />
+              <Stack.Screen name="Login" component={Login} />
+            </>
+          ) : (
+            <>
+                <Stack.Screen name="Home" component={Home} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
 }

@@ -1,18 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, TouchableOpacity, Image, Animated } from 'react-native';
-import { TextInput, Button, Text, Divider } from 'react-native-paper';
-import { useTranslation } from 'react-i18next';
-import styles from "../../styles/LoginScreen";
 import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Animated, Image, TouchableOpacity, View } from 'react-native';
+import { Button, Divider, Text, TextInput } from 'react-native-paper';
+import { useAuth } from "../context/AuthContext";
+import styles from "../styles/LoginScreen";
 
-const LoginScreen: React.FC = () => {
+const Login: React.FC = () => {
+    
     const { t } = useTranslation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        console.log('Email:', email, 'Senha:', password);
+    const { login } = useAuth();
+
+    const handleLogin = async () => {
+        const success = await login(email, password);
+        if (!success) {
+            alert('Email ou senha incorretos!');
+        }
     };
 
     const handleGoogleLogin = () => {
@@ -25,46 +32,46 @@ const LoginScreen: React.FC = () => {
 
     useEffect(() => {
         Animated.sequence([
-          Animated.timing(logoAnim, {
-            toValue: 1,
-            duration: 600,
-            useNativeDriver: true,
-          }),
-          Animated.stagger(200, [
-            Animated.timing(loginButtonAnim, {
-              toValue: 1,
-              duration: 500,
-              useNativeDriver: true,
+            Animated.timing(logoAnim, {
+                toValue: 1,
+                duration: 600,
+                useNativeDriver: true,
             }),
-            Animated.timing(googleButtonAnim, {
-              toValue: 1,
-              duration: 500,
-              useNativeDriver: true,
-            }),
-          ])
+            Animated.stagger(200, [
+                Animated.timing(loginButtonAnim, {
+                    toValue: 1,
+                    duration: 500,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(googleButtonAnim, {
+                    toValue: 1,
+                    duration: 500,
+                    useNativeDriver: true,
+                }),
+            ])
         ]).start();
     }, []);
-      
+
     return (
         <View style={styles.container}>
             <Animated.View
-            style={{
-                opacity: logoAnim,
-                transform: [
-                {
-                    translateY: logoAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-30, 0],
-                    }),
-                },
-                ],
-            }}
+                style={{
+                    opacity: logoAnim,
+                    transform: [
+                        {
+                            translateY: logoAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [-30, 0],
+                            }),
+                        },
+                    ],
+                }}
             >
-            <Image
-                source={require('../../../assets/common-logo.png')}
-                style={styles.logo}
-                resizeMode="contain"
-            />
+                <Image
+                    source={require('../../assets/common-logo.png')}
+                    style={styles.logo}
+                    resizeMode="contain"
+                />
             </Animated.View>
             <View style={styles.formContainer}>
                 <StatusBar style="light" />
@@ -101,7 +108,6 @@ const LoginScreen: React.FC = () => {
                         {t('login')}
                     </Button>
                 </Animated.View>
-
                 <TouchableOpacity onPress={() => console.log('Esqueci minha senha')}>
                     <Text style={styles.forgotPassword}>{t('forgotPassword')}</Text>
                 </TouchableOpacity>
@@ -131,4 +137,4 @@ const LoginScreen: React.FC = () => {
     );
 };
 
-export default LoginScreen;
+export default Login;

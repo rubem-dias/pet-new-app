@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-import { styles } from "../../styles/SplashScreen";
+import { styles } from "../styles/SplashScreen";
 
-export default function SplashScreen() {
+export default function Splash() {
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function SplashScreen() {
   return (
     <View style={styles.container}>
       <LottieView 
-        source={require('../../../assets/splash-loading.json')}
+        source={require('../../assets/splash-loading.json')}
         autoPlay
         loop
         style={styles.animation}
