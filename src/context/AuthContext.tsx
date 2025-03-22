@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import mockUsers from '../test/mocks/mockUsers.json';
-import { deleteToken, saveToken } from "../utils/secureStorage";
+import { deleteToken, getToken, saveToken } from "../utils/secureStorage";
+import { LoginCredentials } from "../types/auth";
 
 type User = {
     email: string;
@@ -8,7 +9,7 @@ type User = {
 
 type AuthContextType = {
     user: User | null;
-    login: (email: string, password: string) => Promise<boolean>;
+    login: (loginCredentials: LoginCredentials) => Promise<boolean>;
     logout: () => void;
 };
 
@@ -22,14 +23,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode; }> = ({ childre
 
     const [user, setUser] = useState<User | null>(null);
 
-    const login = async (email: string, password: string) => {
+    const login = async (loginCredentials: LoginCredentials) => {
 
         const user = mockUsers.find(
-            (u) => u.email === email && u.password === password
+            (u) => u.email === loginCredentials.email && u.password === loginCredentials.password
         );
 
         if (user) {
-            await saveToken("t");
+            await saveToken("asdad");
             setUser(user);
             return true;
         }

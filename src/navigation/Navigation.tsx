@@ -5,6 +5,7 @@ import Splash from "../screens/Splash";
 import Login from "../screens/Login";
 import { useAuth } from "../context/AuthContext";
 import Home from "../screens/Home";
+import Register from "../screens/Register";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function Navigation() {
             <>
               <Stack.Screen name="Splash" component={Splash} />
               <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Register" component={Register} /> 
             </>
           ) : (
             <>

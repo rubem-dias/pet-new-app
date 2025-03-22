@@ -10,6 +10,7 @@ export default function Splash() {
 
   useEffect(() => {
     const checkTokenAndNavigate = async () => {
+
       const token = await getToken();
 
       if (token) {
@@ -20,8 +21,8 @@ export default function Splash() {
     };
 
     const timer = setTimeout(checkTokenAndNavigate, 2500);
-
     return () => clearTimeout(timer);
+    
   }, [navigation]);
 
 

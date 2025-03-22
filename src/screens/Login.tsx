@@ -1,70 +1,67 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Image, TouchableOpacity, View } from 'react-native';
-import { Button, Divider, Text, TextInput } from 'react-native-paper';
+import { Animated, Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Button, Divider, Text, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from "../context/AuthContext";
 import styles from "../styles/LoginScreen";
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
+import { Alert } from "../components/GlobalAlert";
+import { LoginCredentials } from "../types/auth";
+
+
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
 const Login: React.FC = () => {
-    
+
     const { t } = useTranslation();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const theme = useTheme();
+
+    const navigation = useNavigation<LoginScreenNavigationProp>();
+
+    const [credentials, setCredentials] = useState<LoginCredentials>({
+        email: '',
+        password: '',
+    });
 
     const { login } = useAuth();
-
+    
     const handleLogin = async () => {
-        const success = await login(email, password);
-        if (!success) {
-            alert(t('loginError'));
+
+        const handleLoginContext = await login(credentials);
+
+        if (!handleLoginContext) {
+            Alert.error('Erro ao entrar', 'Email ou senha incorretos!');
         }
     };
 
     const handleGoogleLogin = () => {
-        console.log('Login com Google');
+        throw new Error('Function not implemented.');
     };
 
-    const loginButtonAnim = useRef(new Animated.Value(0)).current;
-    const googleButtonAnim = useRef(new Animated.Value(0)).current;
     const logoAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        Animated.sequence([
-            Animated.timing(logoAnim, {
-                toValue: 1,
-                duration: 600,
-                useNativeDriver: true,
-            }),
-            Animated.stagger(200, [
-                Animated.timing(loginButtonAnim, {
-                    toValue: 1,
-                    duration: 500,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(googleButtonAnim, {
-                    toValue: 1,
-                    duration: 500,
-                    useNativeDriver: true,
-                }),
-            ])
-        ]).start();
+        Animated.timing(logoAnim, {
+            toValue: 1,
+            duration: 600,
+            useNativeDriver: true,
+        }).start();
     }, []);
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+            <StatusBar style="light" />
+
             <Animated.View
                 style={{
                     opacity: logoAnim,
-                    transform: [
-                        {
-                            translateY: logoAnim.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [-30, 0],
-                            }),
-                        },
-                    ],
+                    transform: [{
+                        translateY: logoAnim.interpolate({ inputRange: [0, 1], outputRange: [-30, 0] }),
+                    }],
                 }}
             >
                 <Image
@@ -73,67 +70,57 @@ const Login: React.FC = () => {
                     resizeMode="contain"
                 />
             </Animated.View>
+
             <View style={styles.formContainer}>
-                <StatusBar style="light" />
                 <TextInput
                     label={t('email')}
                     mode="outlined"
                     keyboardType="email-address"
-                    value={email}
-                    onChangeText={setEmail}
+                    value={credentials.email}
+                    onChangeText={(text) => setCredentials((prev) => ({ ...prev, email: text }))}
                     style={styles.input}
                 />
+
                 <TextInput
                     label={t('password')}
                     mode="outlined"
                     secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
+                    value={credentials.password}
+                    onChangeText={(text) => setCredentials((prev) => ({ ...prev, password: text }))}
                     style={styles.input}
                 />
-                <Animated.View style={{
-                    opacity: loginButtonAnim,
-                    transform: [{
-                        translateY: loginButtonAnim.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [20, 0],
-                        }),
-                    }]
-                }}>
-                    <Button
-                        mode="contained"
-                        onPress={handleLogin}
-                        style={styles.loginButton}
-                    >
-                        {t('login')}
-                    </Button>
-                </Animated.View>
+
+                <Button
+                    mode="contained"
+                    onPress={handleLogin}
+                    style={styles.loginButton}
+                    disabled={!credentials.email.trim() || !credentials.password.trim()}
+                >
+                {t('login')}
+                </Button>
+
                 <TouchableOpacity onPress={() => console.log('Esqueci minha senha')}>
                     <Text style={styles.forgotPassword}>{t('forgotPassword')}</Text>
                 </TouchableOpacity>
 
                 <Divider style={styles.divider} />
 
-                <Animated.View style={{
-                    opacity: googleButtonAnim,
-                    transform: [{
-                        translateY: googleButtonAnim.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [20, 0],
-                        }),
-                    }]
-                }}>
-                    <Button
-                        mode="outlined"
-                        icon="google"
-                        onPress={handleGoogleLogin}
-                        style={styles.googleButton}
-                    >
-                        {t('loginWithGoogle')}
-                    </Button>
-                </Animated.View>
+                <Text style={{ textAlign: "center", marginVertical: 10 }}>{t('orLoginWith')}</Text>
+
+                <Button mode="outlined" icon="google" onPress={handleGoogleLogin} style={styles.googleButton}>
+                    {t('loginWithGoogle')}
+                </Button>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                    <Text style={{ marginTop: 40, textAlign: "center" }}>
+                        {t('newHere')} {' '}
+                        <Text style={{ color: theme.colors.primary, fontWeight: "bold" }}>
+                            {t('registerAccount')}
+                        </Text>
+                    </Text>
+                </TouchableOpacity>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 

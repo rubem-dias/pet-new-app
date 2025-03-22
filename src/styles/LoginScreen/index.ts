@@ -31,10 +31,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     alignSelf: 'center',
-    marginBottom: 10,
     tintColor: '#7e57c2',
   },
 });
