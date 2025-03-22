@@ -2,5 +2,6 @@
     "email": "Email",
     "password": "Senha",
     "login": "Entrar",
-    "forgotPassword": "Esqueci minha senha"
+    "forgotPassword": "Esqueci minha senha",
+    "loginWithGoogle": "Entrar com o Google"
 }
